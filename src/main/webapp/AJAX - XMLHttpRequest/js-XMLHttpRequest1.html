@@ -1,0 +1,50 @@
+<html>
+    <head>
+        
+        <title></title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <p id="p1" style="color: red">Waiting for AJAX Request...</p>
+        <p id="p2" style="color: blue"></p>
+        <input type="button" value="Lets do some AJAX" onclick="letsDoIt()"><br/>
+        <input type="button" value="Lets undo AJAX" onclick="letsUndoIt()"><br/>
+    </body>
+
+<script>
+
+    function letsDoIt() {
+    	var ajax = new XMLHttpRequest();
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4 && ajax.status == 200) {
+                document.getElementById("p1").innerHTML = 'JSON Object -> '+ajax.responseText;
+                //var obj = JSON.parse(ajax.responseText);
+                //document.getElementById("p2").innerHTML = 'JS object -> name: '+obj.name+', surname: '+obj.surname;
+            } else {
+            	document.getElementById("p1").innerHTML = 'Sorry, there was an ERROR! '+ajax.statusText;
+            }
+        };
+        
+        
+        //ajax.open("GET", "http://localhost:8080/Monitoring/res/test/json", true);
+        ajax.open("GET", "http://localhost:4848/monitoring/domain/server/applications/Monitoring/Test.json", true);
+        //ajax.setRequestHeader("Authorization", "Basic " + btoa("admin:admin"));
+        //ajax.setRequestHeader("Authorization", "Basic " + Base64.encode("admin:admin"));
+        ajax.setRequestHeader("Authorization", "Basic YWRtaW46YWRtaW4=");     //CROSS SITE ERROR! works in Postman (to jest encoded admin:admin)
+        //Chrome console - XMLHttpRequest cannot load http://localhost:4848/monitoring/domain/server/applications/Monitoring/Test.json.
+        //Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+        // Origin 'http://localhost:8080' is therefore not allowed access. The response had HTTP status code 401.
+        ajax.send();
+    }
+    
+    function letsUndoIt() {
+        document.getElementById('p1').innerHTML = 'Waiting for AJAX Request...';
+        document.getElementById("p2").innerHTML = '';
+    }
+    
+    document.write('<br/>After<br/>'+location.origin);
+
+</script>
+
+
+</html>
