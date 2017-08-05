@@ -1,8 +1,8 @@
-package jaxrs;
+package helper;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-//@XmlRootElement
+@XmlRootElement
 public class User {
 	
 	private String name;
